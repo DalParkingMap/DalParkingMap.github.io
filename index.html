@@ -1,0 +1,1053 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Interactive Dalhousie University Parking Map</title>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cdn.dal.ca/etc/designs/dalhousie/clientlibs/global/default/images/favicon/icon-192x192.png.lt_52d8b16a1d0bc6e6e2f65bda92d6c7fa.res/icon-192x192.png">
+    <meta name="description" content="Interactive Dalhousie University Parking Map">
+    <meta name="author" content="Jace Barrett">
+    <meta name="co-author" content="Torrey Dias">
+    <meta name="co-author" content="Raphael Ono-Raphael">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="scripts/script.js"></script>
+    <body onload="pageLoad()">
+    <!--
+      Change log:
+        Created:  16. March 2024
+        Modified: 16. March 2024 - Created website shell and clickable zoning anchors on map for evening map using Google link as modal placeholder
+                  17. March 2024 - Added anchors and reused zoning for daytime map with only spot type differences. Created modals for all parking lots for both evening and daytime. Implemented code to switch between daytime and evening maps depending on user's system clock
+                  18. March 2024 - Added photos to modals for both daytime and evening maps. Added tables for all parking lots, daytime and evening. Added lot information for all modals.
+                  19. March 2024 - Added function to toggle building names on map, as well as a function that checks the system date and time to determine which map to show.
+      -->
+  </head>
+  <body>
+    <h1>Dalhousie University Parking Map</h1>
+    <div class="parenteve">
+      <a id="openEve1" class="openLot" onclick="openEve1()"><img class="evelots" id="eve1" src="media/eve lots/eve1.png" alt="lot"></a>
+      <a id="openEve2" class="openLot" onclick="openEve2()"><img class="evelots" id="eve2" src="media/eve lots/eve2.png" alt="lot"></a>
+      <a id="openEve3" class="openLot" onclick="openEve3()"><img class="evelots" id="eve3" src="media/eve lots/eve3.png" alt="lot"></a>
+      <a id="openEve4" class="openLot" onclick="openEve4()"><img class="evelots" id="eve4" src="media/eve lots/eve4.png" alt="lot"></a>
+      <a id="openEve5" class="openLot" onclick="openEve5()"><img class="evelots" id="eve5" src="media/eve lots/eve5.png" alt="lot"></a>
+      <a id="openEve6" class="openLot" onclick="openEve6()"><img class="evelots" id="eve6" src="media/eve lots/eve6.png" alt="lot"></a>
+      <a id="openEve7" class="openLot" onclick="openEve7()"><img class="evelots" id="eve7" src="media/eve lots/eve7.png" alt="lot"></a>
+      <a id="openEve8" class="openLot" onclick="openEve8()"><img class="evelots" id="eve8" src="media/eve lots/eve8.png" alt="lot"></a>
+      <a id="openEve9" class="openLot" onclick="openEve9()"><img class="evelots" id="eve9" src="media/eve lots/eve9.png" alt="lot"></a>
+      <a id="openEve10" class="openLot" onclick="openEve10()"><img class="evelots" id="eve10" src="media/eve lots/eve10.png" alt="lot"></a>
+      <a id="openEve11" class="openLot" onclick="openEve11()"><img class="evelots" id="eve11" src="media/eve lots/eve11.png" alt="lot"></a>
+      <a id="openEve12" class="openLot" onclick="openEve12()"><img class="evelots" id="eve12" src="media/eve lots/eve12.png" alt="lot"></a>
+      <a id="openEve13" class="openLot" onclick="openEve13()"><img class="evelots" id="eve13" src="media/eve lots/eve13.png" alt="lot"></a>
+      <a id="openEve14" class="openLot" onclick="openEve14()"><img class="evelots" id="eve14" src="media/eve lots/eve14.png" alt="lot"></a>
+      <a id="openEve15" class="openLot" onclick="openEve15()"><img class="evelots" id="eve15" src="media/eve lots/eve15.png" alt="lot"></a>
+      <a id="openEve16" class="openLot" onclick="openEve16()"><img class="evelots" id="eve16" src="media/eve lots/eve16.png" alt="lot"></a>
+      <a id="openEve17" class="openLot" onclick="openEve17()"><img class="evelots" id="eve17" src="media/eve lots/eve17.png" alt="lot"></a>
+      <a id="openEve18" class="openLot" onclick="openEve18()"><img class="evelots" id="eve18" src="media/eve lots/eve18.png" alt="lot"></a>
+      <a id="openEve19" class="openLot" onclick="openEve19()"><img class="evelots" id="eve19" src="media/eve lots/eve19.png" alt="lot"></a>
+      <a id="openEve20" class="openLot" onclick="openEve20()"><img class="evelots" id="eve20" src="media/eve lots/eve20.png" alt="lot"></a>
+      <a id="openEve21" class="openLot" onclick="openEve21()"><img class="evelots" id="eve21" src="media/eve lots/eve21.png" alt="lot"></a>
+      <img id="evemap" src="media/maps/eveningmapnamed.png" alt="Zoned evening Dalhousie Parking Map with building names">
+    </div>
+
+    <div class="parentday">
+      <a id="openDay1" class="openLot" onclick="openDay1()"><img class="daylots" id="day1" src="media/day lots/day1.png" alt="lot"></a>
+      <a id="openDay2" class="openLot" onclick="openDay2()"><img class="daylots" id="day2" src="media/day lots/day2.png" alt="lot"></a>
+      <a id="openDay3" class="openLot" onclick="openDay3()"><img class="daylots" id="day3" src="media/day lots/day3.png" alt="lot"></a>
+      <a id="openDay4" class="openLot" onclick="openDay4()"><img class="daylots" id="day4" src="media/day lots/day4.png" alt="lot"></a>
+      <a id="openDay5" class="openLot" onclick="openDay5()"><img class="daylots" id="day5" src="media/day lots/day5.png" alt="lot"></a>
+      <a id="openDay6" class="openLot" onclick="openDay6()"><img class="daylots" id="day6" src="media/day lots/day6.png" alt="lot"></a>
+      <a id="openDay7" class="openLot" onclick="openDay7()"><img class="daylots" id="day7" src="media/day lots/day7.png" alt="lot"></a>
+      <a id="openDay8" class="openLot" onclick="openDay8()"><img class="daylots" id="day8" src="media/day lots/day8.png" alt="lot"></a>
+      <a id="openDay9" class="openLot" onclick="openDay9()"><img class="daylots" id="day9" src="media/day lots/day9.png" alt="lot"></a>
+      <a id="openDay10" class="openLot" onclick="openDay10()"><img class="daylots" id="day10" src="media/day lots/day10.png" alt="lot"></a>
+      <a id="openDay11" class="openLot" onclick="openDay11()"><img class="daylots" id="day11" src="media/day lots/day11.png" alt="lot"></a>
+      <a id="openDay12" class="openLot" onclick="openDay12()"><img class="daylots" id="day12" src="media/day lots/day12.png" alt="lot"></a>
+      <a id="openDay13" class="openLot" onclick="openDay13()"><img class="daylots" id="day13" src="media/day lots/day13.png" alt="lot"></a>
+      <a id="openDay14" class="openLot" onclick="openDay14()"><img class="daylots" id="day14" src="media/day lots/day14.png" alt="lot"></a>
+      <a id="openDay15" class="openLot" onclick="openDay15()"><img class="daylots" id="day15" src="media/day lots/day15.png" alt="lot"></a>
+      <a id="openDay16" class="openLot" onclick="openDay16()"><img class="daylots" id="day16" src="media/day lots/day16.png" alt="lot"></a>
+      <a id="openDay17" class="openLot" onclick="openDay17()"><img class="daylots" id="day17" src="media/day lots/day17.png" alt="lot"></a>
+      <a id="openDay18" class="openLot" onclick="openDay18()"><img class="daylots" id="day18" src="media/day lots/day18.png" alt="lot"></a>
+      <a id="openDay19" class="openLot" onclick="openDay19()"><img class="daylots" id="day19" src="media/day lots/day19.png" alt="lot"></a>
+      <a id="openDay20" class="openLot" onclick="openDay20()"><img class="daylots" id="day20" src="media/day lots/day20.png" alt="lot"></a>
+      <a id="openDay21" class="openLot" onclick="openDay21()"><img class="daylots" id="day21" src="media/day lots/day21.png" alt="lot"></a>
+      <img id="daymap" src="media/maps/daymapnamed.png" alt="Zoned daytime Dalhousie Parking Map with building names">
+    </div>
+
+    <div id="loading">
+      <p id="loadingmap">Map loading...</p>
+    </div>
+
+    <!--
+      Evening time modals
+    -->
+    <div id="eve1Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Hancock [Lot 1]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>118</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e1" class="lots" src="media/eve zoned lots/e1.png" alt="lot">
+      </div>
+    </div>
+
+    <div id="eve2Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Biology [Lot 2]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>84</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e2" class="lots" src="media/eve zoned lots/e2.png" alt="lot">
+      </div>
+    </div>
+
+    <div id="eve3Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Dunn [Lot 3]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>197</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e3" class="lots" src="media/eve zoned lots/e3.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve4Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Chemistry [Lot 4]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>34</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e4" class="lots" src="media/eve zoned lots/e4.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve5Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Studley [Lot 5]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>34</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e5" class="lots" src="media/eve zoned lots/e5.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve6Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>McCain Parkade [Lot 6]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>0</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>92</p>
+        <img id="e6" class="lots" src="media/eve zoned lots/e6.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve7Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Arts Centre [Lot 7]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>13</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e7" class="lots" src="media/eve zoned lots/e7.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve8Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Robie Lot [Lot 8]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>20</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e8" class="lots" src="media/eve zoned lots/e8.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve9Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Glengary [Lot 9]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>13</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e9" class="lots" src="media/eve zoned lots/e9.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve10Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>CSB Lot [Lot 10]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>39</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e10" class="lots" src="media/eve zoned lots/e10.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve11Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>CSB Parkade [Lot 11]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>165</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e11" class="lots" src="media/eve zoned lots/e11.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve12Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Risley Hall Lot [Lot 12]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>35</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e12" class="lots" src="media/eve zoned lots/e12.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve13Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2 class="smallerh2">Risley Hall Parkade [Lot 13]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>64</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e13" class="lots" src="media/eve zoned lots/e13.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve14Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>SUB [Lot 14]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>10</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e14" class="lots" src="media/eve zoned lots/e14.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve15Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Killam Circle [Lot 15]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>24</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e15" class="lots" src="media/eve zoned lots/e15.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve16Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Alumni West [Lot 16]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>51</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e16" class="lots" src="media/eve zoned lots/e16.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve17Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Alumni Crescent [Lot 17]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>112</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e17" class="lots" src="media/eve zoned lots/e17.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve18Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Dalplex [Lot 18]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>147</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e18" class="lots" src="media/eve zoned lots/e18.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve19Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Shirreff Hall [Lot 19]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>7</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e19" class="lots" src="media/eve zoned lots/e19.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve20Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2 class="smallerh2">Steele Ocean Sciences [Lot 20]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>39</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e20" class="lots" src="media/eve zoned lots/e20.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="eve21Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2 class="smallerh2">Collaborative Health [Lot 21]</h2>
+        <h3>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h3>
+        <span class="general">General</span>
+        <p>16</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="e21" class="lots" src="media/eve zoned lots/e21.png" alt="lot">
+      </div>
+    </div>
+ 
+    <!--
+      Daytime modals
+    -->
+    <div id="day1Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Hancock [Lot 1]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>117</p>
+        <span class="reserved">Reserved</span>
+        <p>1</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d1" class="lots" src="media/day zoned lots/d1.png" alt="lot">
+      </div>
+    </div>
+    <div id="day2Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Biology [Lot 2]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>73</p>
+        <span class="reserved">Reserved</span>
+        <p>3</p>
+        <span class="short-term">Short-Term</span>
+        <p>8</p>
+        <img id="d2" class="lots" src="media/day zoned lots/d2.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day3Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Dunn [Lot 3]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>0</p>
+        <span class="reserved">Reserved</span>
+        <p>197</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d3" class="lots" src="media/day zoned lots/d3.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day4Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Chemistry [Lot 4]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>18</p>
+        <span class="reserved">Reserved</span>
+        <p>11</p>
+        <span class="short-term">Short-Term</span>
+        <p>5</p>
+        <img id="d4" class="lots" src="media/day zoned lots/d4.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day5Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Studley [Lot 5]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>20</p>
+        <span class="reserved">Reserved</span>
+        <p>9</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d5" class="lots" src="media/day zoned lots/d5.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day6Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>McCain Parkade [Lot 6]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>0</p>
+        <span class="reserved">Reserved</span>
+        <p>92</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d6" class="lots" src="media/day zoned lots/d6.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day7Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Arts Centre [Lot 7]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>9</p>
+        <span class="reserved">Reserved</span>
+        <p>4</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d7" class="lots" src="media/day zoned lots/d7.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day8Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Robie Lot [Lot 8]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>4</p>
+        <span class="reserved">Reserved</span>
+        <p>16</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d8" class="lots" src="media/day zoned lots/d8.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day9Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Glengary [Lot 9]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>5</p>
+        <span class="reserved">Reserved</span>
+        <p>8</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d9" class="lots" src="media/day zoned lots/d9.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day10Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>CSB Lot [Lot 10]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>27</p>
+        <span class="reserved">Reserved</span>
+        <p>12</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d10" class="lots" src="media/day zoned lots/d10.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day11Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>CSB Parkade [Lot 11]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>0</p>
+        <span class="reserved">Reserved</span>
+        <p>165</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d11" class="lots" src="media/day zoned lots/d11.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day12Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Risley Hall Lot [Lot 12]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>33</p>
+        <span class="reserved">Reserved</span>
+        <p>2</p>
+        <span class="short-term">Short-Term</span>
+        <p>3</p>
+        <img id="d12" class="lots" src="media/day zoned lots/d12.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day13Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2 class="smallerh2">Risley Hall Parkade [Lot 13]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>0</p>
+        <span class="reserved">Reserved</span>
+        <p>64</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d13" class="lots" src="media/day zoned lots/d13.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day14Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>SUB [Lot 14]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>0</p>
+        <span class="reserved">Reserved</span>
+        <p>3</p>
+        <span class="short-term">Short-Term</span>
+        <p>7</p>
+        <img id="d14" class="lots" src="media/day zoned lots/d14.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day15Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Killam Circle [Lot 15]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>0</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>24</p>
+        <img id="d15" class="lots" src="media/day zoned lots/d15.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day16Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Alumni West [Lot 16]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>36</p>
+        <span class="reserved">Reserved</span>
+        <p>1</p>
+        <span class="short-term">Short-Term</span>
+        <p>14</p>
+        <img id="d16" class="lots" src="media/day zoned lots/d16.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day17Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Alumni Crescent [Lot 17]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>95</p>
+        <span class="reserved">Reserved</span>
+        <p>19</p>
+        <span class="short-term">Short-Term</span>
+        <p>8</p>
+        <img id="d17" class="lots" src="media/day zoned lots/d17.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day18Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Dalplex [Lot 18]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>116</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>31</p>
+        <img id="d18" class="lots" src="media/day zoned lots/d18.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day19Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2>Shirreff Hall [Lot 19]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>7</p>
+        <span class="reserved">Reserved</span>
+        <p>0</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d19" class="lots" src="media/day zoned lots/d19.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day20Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2 class="smallerh2">Steele Ocean Sciences [Lot 20]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>33</p>
+        <span class="reserved">Reserved</span>
+        <p>6</p>
+        <span class="short-term">Short-Term</span>
+        <p>0</p>
+        <img id="d20" class="lots" src="media/day zoned lots/d20.png" alt="lot">
+      </div>
+    </div>
+ 
+    <div id="day21Modal" class="modal">
+      <div class="modal-body">
+        <span class="close-span" onclick="closeModal()">&times;</span>
+        <h2 class="smallerh2">Collaborative Health [Lot 21]</h2>
+        <h3>6:00 AM TO 4:30 PM WEEKDAYS</h3>
+        <span class="general">General</span>
+        <p>4</p>
+        <span class="reserved">Reserved</span>
+        <p>4</p>
+        <span class="short-term">Short-Term</span>
+        <p>8</p>
+        <img id="d21" class="lots" src="media/day zoned lots/d21.png" alt="lot">
+      </div>
+    </div>
+
+    <div id="toggle">
+      <input onclick="toggleBuildingNames()" type="submit" value="Toggle building names">
+    </div>
+
+    <!--
+      Tables for bottom of page
+    -->
+    <div class="tables" id="dttable">
+    <h4>Studley Campus | Daytime Parking</h4>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th class="gen">General</th>
+          <th class="res">Reserved</th>
+          <th class="st">Short-Term</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="number">1.</td>
+          <td class="name">Hancock</td>
+          <td>117</td>
+          <td>1</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">2.</td>
+          <td class="name">Biology</td>
+          <td>73</td>
+          <td>3</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td class="number">3.</td>
+          <td class="name">Dunn</td>
+          <td>0</td>
+          <td>197</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">4.</td>
+          <td class="name">Chemistry</td>
+          <td>18</td>
+          <td>11</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td class="number">5.</td>
+          <td class="name">Studley</td>
+          <td>20</td>
+          <td>9</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">6.</td>
+          <td class="name">McCain Parkade</td>
+          <td>0</td>
+          <td>92</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">7.</td>
+          <td class="name">Arts Centre</td>
+          <td>9</td>
+          <td>4</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">8.</td>
+          <td class="name">Robie Lot</td>
+          <td>4</td>
+          <td>16</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">9.</td>
+          <td class="name">Glengary</td>
+          <td>5</td>
+          <td>8</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">10.</td>
+          <td class="name">CSB Lot</td>
+          <td>27</td>
+          <td>12</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">11.</td>
+          <td class="name">CSB Parkade</td>
+          <td>0</td>
+          <td>165</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">12.</td>
+          <td class="name">Risley Hall Lot</td>
+          <td>33</td>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td class="number">13.</td>
+          <td class="name">Risley Hall Parkade</td>
+          <td>0</td>
+          <td>64</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">14.</td>
+          <td class="name">SUB</td>
+          <td>0</td>
+          <td>3</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td class="number">15.</td>
+          <td class="name">Killam Circle</td>
+          <td>0</td>
+          <td>0</td>
+          <td>24</td>
+        </tr>
+        <tr>
+          <td class="number">16.</td>
+          <td class="name">Alumni West</td>
+          <td>36</td>
+          <td>1</td>
+          <td>14</td>
+        </tr>
+        <tr>
+          <td class="number">17.</td>
+          <td class="name">Alumni Crescent</td>
+          <td>95</td>
+          <td>19</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td class="number">18.</td>
+          <td class="name">Dalplex</td>
+          <td>116</td>
+          <td>0</td>
+          <td>31</td>
+        </tr>
+        <tr>
+          <td class="number">19.</td>
+          <td class="name">Shirreff Hall</td>
+          <td>7</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">20.</td>
+          <td class="name">Steele Ocean Sciences</td>
+          <td>33</td>
+          <td>6</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">21.</td>
+          <td class="name">Collaborative Health</td>
+          <td>4</td>
+          <td>4</td>
+          <td>8</td>
+        </tr>
+      </tbody>
+    </table>
+    <h5>6:00 AM TO 4:30 PM WEEKDAYS</h5>
+    </div>
+
+    <div class="tables" id="evtable">
+    <h4 id ="eveningtitle">Studley Campus | Evening Parking</h4>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th class="gen">General</th>
+          <th class="res">Reserved</th>
+          <th class="st">Short-Term</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="number">1.</td>
+          <td class="name">Hancock</td>
+          <td>118</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">2.</td>
+          <td class="name">Biology</td>
+          <td>84</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">3.</td>
+          <td class="name">Dunn</td>
+          <td>197</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">4.</td>
+          <td class="name">Chemistry</td>
+          <td>34</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">5.</td>
+          <td class="name">Studley</td>
+          <td>34</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">6.</td>
+          <td class="name">McCain Parkade</td>
+          <td>0</td>
+          <td>0</td>
+          <td>92</td>
+        </tr>
+        <tr>
+          <td class="number">7.</td>
+          <td class="name">Arts Centre</td>
+          <td>13</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">8.</td>
+          <td class="name">Robie Lot</td>
+          <td>20</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">9.</td>
+          <td class="name">Glengary</td>
+          <td>13</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">10.</td>
+          <td class="name">CSB Lot</td>
+          <td>39</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">11.</td>
+          <td class="name">CSB Parkade</td>
+          <td>165</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">12.</td>
+          <td class="name">Risley Hall Lot</td>
+          <td>35</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">13.</td>
+          <td class="name">Risley Hall Parkade</td>
+          <td>64</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">14.</td>
+          <td class="name">SUB</td>
+          <td>10</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">15.</td>
+          <td class="name">Killam Circle</td>
+          <td>24</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">16.</td>
+          <td class="name">Alumni West</td>
+          <td>51</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">17.</td>
+          <td class="name">Alumni Crescent</td>
+          <td>112</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">18.</td>
+          <td class="name">Dalplex</td>
+          <td>147</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">19.</td>
+          <td class="name">Shirreff Hall</td>
+          <td>7</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">20.</td>
+          <td class="name">Steele Ocean Sciences</td>
+          <td>39</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td class="number">21.</td>
+          <td class="name">Collaborative Health</td>
+          <td>16</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+    <h5>4:30 PM TO 1:30 AM WEEKDAYS | ALL DAY ON WEEKENDS</h5>
+    </div>
+  </body>
+</html>
