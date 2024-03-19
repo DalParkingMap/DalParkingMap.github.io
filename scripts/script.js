@@ -232,7 +232,7 @@ function clickWindow(event) {
 
 //Check if (when using a mobile device), the screen is vertical. If it is, tell user to rotate
 function rotateAlert() {
-    if (window.innerWidth < 913) {
+    if (window.innerWidth < 600) {
         alert("Please rotate your device 90 degrees for better viewing.");
     }
 }
