@@ -758,6 +758,24 @@ input[type=submit] {
 	margin-top: -20vw;
 }
 
+#disclaimer {
+	font-size: 1vw;
+	font-style: italic;
+	color: black;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: table;
+}
+
+footer {
+    background-color: lightgrey;
+    display: table-row;
+    height: 0;
+}
 
 /* Tablet and small screen layout, unrotated. Hopefully nobody uses it like this but just in case, we want to make the close button larger than 1mm and have the tables stack*/
 @media screen and (max-width: 913px) {
